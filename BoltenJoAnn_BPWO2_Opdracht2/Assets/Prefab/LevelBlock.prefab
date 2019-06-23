@@ -1861,7 +1861,7 @@ GameObject:
   - component: {fileID: 813008127664458218}
   m_Layer: 0
   m_Name: SouthTrigger
-  m_TagString: NorthTrigger
+  m_TagString: SouthTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6214,7 +6214,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  anim: {fileID: 0}
 --- !u!1 &2958659035533346536
 GameObject:
   m_ObjectHideFlags: 0
@@ -7138,7 +7137,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  anim: {fileID: 0}
 --- !u!1 &2958659036032033980
 GameObject:
   m_ObjectHideFlags: 0
@@ -7530,7 +7528,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  anim: {fileID: 0}
 --- !u!1 &2958659036289456823
 GameObject:
   m_ObjectHideFlags: 0
@@ -9356,7 +9353,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  anim: {fileID: 0}
 --- !u!1 &2958659037248860490
 GameObject:
   m_ObjectHideFlags: 0

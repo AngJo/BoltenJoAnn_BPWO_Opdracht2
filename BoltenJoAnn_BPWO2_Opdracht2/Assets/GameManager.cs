@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
 
     public GameObject levelBlock;
 
+    public GameObject currentRoom;
+    public GameObject previousRoom;
+
     public bool newLevelBlockMade = false;
     public bool leftStartBlock = false;
     public bool checkedTrigger = false;
@@ -20,7 +23,6 @@ public class GameManager : MonoBehaviour
     private string enteredTrigger;
     private int correctPath = 0;
     private GameObject wall;
-    private GameObject oldRoom = null;
 
     private int wrongChoice = 0;
     private int rightChoice = 0;
@@ -118,39 +120,20 @@ public class GameManager : MonoBehaviour
     void ChangeName()
     {
         print("Checking name");
-       
+
         //Als er nog geen previousLevel is
-        if (GameObject.Find("previousLevel") == null)
-        {
-            //Vind object met naam New Level (Current Level block)
-            oldRoom = GameObject.Find("newLevel");
-            //Rename current Level block to previous
-            oldRoom.name = "previousLevel";
-            print("Room name changed from newLevel to previousLevel");
-        }
-        else
-        {
-            oldRoom = GameObject.Find("previousLevel");
-        }
-        //make new Level block
-        //if A previousLevel block exists, and new Level has not yet been made, then make a new one
-        print(GameObject.Find("previousLevel") != null);
-        print(GameObject.Find("newLevel") == null);
-        if (GameObject.Find("previousLevel") != null && GameObject.Find("newLevel") == null)
-        {
-            print(trigger);
-            
-            CreateLevelBlock(trigger);
-            Destroy(oldRoom);
-            newLevelBlockMade = true;
-            
-        }
-        
+        //Vind object met naam New Level (Current Level block)
+        previousRoom = currentRoom;
+        //Rename current Level block to previous
+        previousRoom.name = "previousLevel";
+        print("Room name changed from newLevel to previousLevel");
 
+        print(trigger);
+            
+        CreateLevelBlock(trigger);
         //CHECK distance to player from wall
-
-
     }
+
     public void CreateNewLevelBlock(GameObject player, string triggerWall)
     { 
         trigger = triggerWall;
@@ -162,30 +145,16 @@ public class GameManager : MonoBehaviour
     {
         print("Creating new level");
         print(trigger);
-        GameObject newLevelBlock;
+        Vector3 offset = Vector3.zero;
         switch (trigger)
         {
-            case "NorthTrigger": newLevelBlock = (GameObject)Instantiate(levelBlock, oldRoom.transform.position + new Vector3(0f, -1.0f, 51f), Quaternion.identity); newLevelBlock.name = "newLevel"; break;
-            case "SouthTrigger": newLevelBlock = (GameObject)Instantiate(levelBlock, oldRoom.transform.position - new Vector3(0f, 0.0f, 51f), Quaternion.identity); newLevelBlock.name = "newLevel"; break;
-            case "WestTrigger": break;
-            case "EastTrigger": break;
+            case "NorthTrigger": offset = new Vector3(0f, 0f, 50f); break;
+            case "SouthTrigger": offset = new Vector3(0f, 0.0f, -50f); break;
+            case "WestTrigger": offset = new Vector3(-50f, 0f, 0f); break;
+            case "EastTrigger": offset = new Vector3(50f, 0f, 0f);  break;
         }
-    }
-
-    
-    
-
-    void checkNewBlockPosition(string triggerWall, GameObject previousRoom)
-    {
-        GameObject newLevelBlock;
-        checkedTrigger = false;
-        switch (triggerWall)
-        {
-            case "NorthTrigger": newLevelBlock = (GameObject)Instantiate(levelBlock, previousRoom.transform.position + new Vector3(0f, -1.0f, 51f), Quaternion.identity); newLevelBlock.name = "newLevel"; newLevelBlockMade = true; break;
-            case "SouthTrigger": newLevelBlock = (GameObject)Instantiate(levelBlock, previousRoom.transform.position - new Vector3(0f, 0f, 50.5f), Quaternion.identity); newLevelBlock.name = "newLevel"; newLevelBlockMade = true; break;
-            case "WestTrigger": newLevelBlock = (GameObject)Instantiate(levelBlock, playerPos.position + new Vector3(-26.5f, -1.0f, 0f), Quaternion.identity); newLevelBlock.name = "newLevel"; newLevelBlockMade = true; break;
-            case "EastTrigger": newLevelBlock = (GameObject)Instantiate(levelBlock, playerPos.position + new Vector3(23.5f, -1.0f, 0f), Quaternion.identity); newLevelBlock.name = "newLevel"; newLevelBlockMade = true; break;
-        }
+        currentRoom = Instantiate(levelBlock, currentRoom.transform.position + offset, Quaternion.identity);
+        currentRoom.name = "newLevel";
     }
 
     public void CheckPlayerDistanceToPreviousBlock()
@@ -193,42 +162,16 @@ public class GameManager : MonoBehaviour
         GameObject player = GameObject.FindWithTag("Player");
         wall = GameObject.Find("previousLevel/OuterWalls/Back");
         //If a new Levelblock has been created
-        if (GameObject.Find("newLevel") && GameObject.Find("previousLevel"))
+        if (currentRoom && previousRoom)
         {
             //Check Distance to player
             //If my distance between the player and the wall is larger than 5, AND the player's z position is smaller than the walls z.position (smaller than -25)
             if (Vector3.Distance(player.transform.position, wall.transform.position) > 5 && player.transform.position.z < (wall.transform.position.z))
             {
-                Destroy(oldRoom.gameObject);
+                Destroy(previousRoom.gameObject);
             }
         }     
         
-    }
-
-
-
-    bool CheckDistanceToTrigger(string enteredTrigger, GameObject previousRoom)
-    {
-        GameObject player = GameObject.FindWithTag("Player");
-        switch (enteredTrigger)
-        {
-            case "NorthTrigger": if (Vector3.Distance(player.transform.position, wall.transform.position) > 5 && player.transform.position.z > (previousRoom.transform.position.z + 30f)) { return true; } else { return false; }
-            case "EastTrigger": if (Vector3.Distance(player.transform.position, wall.transform.position) > 5 && player.transform.position.x < (previousRoom.transform.position.x + 28f)) { return true; } else { return false; }
-            case "SouthTrigger":
-                Debug.Log(Vector3.Distance(player.transform.position, wall.transform.position));
-                print(wall.name);
-                print(wall.transform.position);
-                print(player.transform.position.z);
-                print(wall.transform.position.z);
-                if (Vector3.Distance(player.transform.position, wall.transform.position) > 8 && player.transform.position.z < (wall.transform.position.z))
-                { print("true");
-                    return true; }
-                else { 
-                    print("false");
-                    return false; }
-
-            default: return false;
-        }
     }
 
     void CheckTrigger(string enteredTriggerTag)

@@ -11,15 +11,18 @@ public class ExitMazeScript : MonoBehaviour
         {
             print("player has entered a trigger");
             GameManager.Instance.CreateNewLevelBlock(other.gameObject, this.tag);
-        }
-        else
-        {
             GameManager.Instance.timer = 1f;
         }
-        
         
         //GameManager.Instance.leftStartBlock = true;
     }
 
-    
+    private void OnTriggerExit(Collider other) {
+        Debug.Log(transform.parent.parent.gameObject.name);
+        if(transform.parent.parent.gameObject == GameManager.Instance.previousRoom) {
+            Destroy(GameManager.Instance.previousRoom);
+        }
+    }
+
+
 }
