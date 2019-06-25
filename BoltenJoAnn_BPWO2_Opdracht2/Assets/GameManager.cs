@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,19 +16,26 @@ public class GameManager : MonoBehaviour
 
     public GameObject currentRoom;
     public GameObject previousRoom;
+    public GameObject storyItem1;
+    public GameObject storyItem2;
+    public GameObject storyItem3;
 
     public bool newLevelBlockMade = false;
     public bool leftStartBlock = false;
     public bool checkedTrigger = false;
+    [SerializeField]
     private int activatedTrigger;
     private string enteredTrigger;
+    [SerializeField]
     private int correctPath = 0;
     private GameObject wall;
 
+    [SerializeField]
     private int wrongChoice = 0;
+    [SerializeField]
     private int rightChoice = 0;
 
-    // 0 = n, 1 = s, 2 = e, 3 = w
+    // 0 = n, 1 = w, 2 = s, 3 = e
     public int truth = 0;
     public int neutral = 0;
     public FairyScript[] fae;
@@ -64,21 +72,33 @@ public class GameManager : MonoBehaviour
         }
         if (wrongChoice >= 3)
         {
-            //start losing game
+            LoadLoseCase();
         }
         else if (rightChoice >= 4)
         {
-            //start winning game
+            LoadWinCase();
         }
 
     }
+
+    void SpawnStoryObject()
+    {
+        GameObject storyItem;
+        switch (rightChoice)
+        {
+            case 1: storyItem = Instantiate(storyItem1, new Vector3(0, 0, 0), Quaternion.identity, currentRoom.transform); storyItem.transform.localPosition = new Vector3(0, 0.15f, 0);  break;
+            case 2: storyItem = Instantiate(storyItem2, new Vector3(0, 0, 0), Quaternion.identity, currentRoom.transform); storyItem.transform.localPosition = Vector3.zero; break;
+            case 3: storyItem = Instantiate(storyItem3, new Vector3(0, 0, 0), Quaternion.identity, currentRoom.transform); storyItem.transform.localPosition = Vector3.zero; break;
+        }
+    }
+
     void ShuffleArray()
     {
         for (int i = 0; i < fae.Length; i++)
         {
             FairyScript fairy = fae[i];
             //Get new position to move i to
-            int rndPos = Random.Range(0, i);
+            int rndPos = UnityEngine.Random.Range(0, i);
             // Current fairy position = new fairy position
             fae[i] = fae[rndPos];
             //Input information into randomPos
@@ -89,11 +109,14 @@ public class GameManager : MonoBehaviour
 
     public void AssigNewLiar()
     {
-        truth = Random.Range(0, fae.Length);
-        neutral = Random.Range(0, fae.Length);
+        
+
+        truth = UnityEngine.Random.Range(0, fae.Length);
+        correctPath = truth;
+        neutral = UnityEngine.Random.Range(0, fae.Length);
         if (neutral == truth)
         {
-            neutral = Random.Range(0, fae.Length);
+            neutral = UnityEngine.Random.Range(0, fae.Length);
         }
         else
         {
@@ -119,6 +142,10 @@ public class GameManager : MonoBehaviour
     
     void ChangeName()
     {
+        if (fae == null)
+        {
+            fae = FindObjectsOfType<FairyScript>();
+        }
         print("Checking name");
 
         //Als er nog geen previousLevel is
@@ -137,8 +164,18 @@ public class GameManager : MonoBehaviour
     public void CreateNewLevelBlock(GameObject player, string triggerWall)
     { 
         trigger = triggerWall;
+        CheckTrigger(trigger);
         //checkedTrigger = true;
         ChangeName();
+        
+
+        if (activatedTrigger == correctPath)
+        {
+            rightChoice += 1;
+            AssigNewLiar();
+            SpawnStoryObject();
+        }
+        else { wrongChoice += 1; }
     }
 
     void CreateLevelBlock(string trigger)
@@ -169,6 +206,7 @@ public class GameManager : MonoBehaviour
             if (Vector3.Distance(player.transform.position, wall.transform.position) > 5 && player.transform.position.z < (wall.transform.position.z))
             {
                 Destroy(previousRoom.gameObject);
+                fae = FindObjectsOfType<FairyScript>();
             }
         }     
         
@@ -181,17 +219,28 @@ public class GameManager : MonoBehaviour
         checkedTrigger = true;
         switch (enteredTriggerTag)
         {
-            case "NorthTrigger": activatedTrigger = 0; wall = GameObject.Find("previousLevel/OuterWalls/Front"); break;
-            case "SouthTrigger": activatedTrigger = 1; wall = GameObject.Find("previousLevel/OuterWalls/Back"); break;
-            case "WestTrigger": activatedTrigger = 3; wall = GameObject.Find("previousLevel/OuterWalls/Left"); break;
-            case "EastTrigger": activatedTrigger = 2; wall = GameObject.Find("previousLevel/OuterWalls/Right"); break;
+            case "NorthTrigger": activatedTrigger = 0; /*wall = GameObject.Find("previousLevel/OuterWalls/Front");*/ break;
+            case "SouthTrigger": activatedTrigger = 2; /*wall = GameObject.Find("previousLevel/OuterWalls/Back");*/ break;
+            case "WestTrigger": activatedTrigger = 1; /*wall = GameObject.Find("previousLevel/OuterWalls/Left");*/ break;
+            case "EastTrigger": activatedTrigger = 3; /*wall = GameObject.Find("previousLevel/OuterWalls/Right");*/ break;
         }
 
     }
 
+    public void ClearFaeArray()
+    {
+        Array.Clear(fae, 0, fae.Length);
+    }
     void LoadWinCase()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1, LoadSceneMode.Single);
+        rightChoice = 0;
+    }
+
+    void LoadLoseCase()
+    {
+        SceneManager.LoadScene("LoseScene", LoadSceneMode.Single);
+        wrongChoice = 0;
     }
 
     

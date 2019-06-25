@@ -43,6 +43,13 @@ public class PlayerScript : MonoBehaviour
                     //Start Dialogue script from fairy
                     //fairy.playdialogue
                 }
+                else if (hit.collider.CompareTag("storyItem1"))
+                {
+                    if (DialogueScript.Instance.isCoroutineStarted == false)
+                    {
+                        StartCoroutine(DialogueScript.Instance.storyItem1());
+                    }
+                }
             }
         }
 

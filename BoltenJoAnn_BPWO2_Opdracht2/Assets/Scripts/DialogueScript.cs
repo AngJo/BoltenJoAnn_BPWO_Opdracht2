@@ -15,7 +15,6 @@ public class DialogueScript : MonoBehaviour
     public GameObject textBox;
     public bool isCoroutineStarted = false;
 
-
     private void Awake()
     {
         if (instance != null)
@@ -44,14 +43,15 @@ public class DialogueScript : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         textBox.GetComponent<TextMeshProUGUI>().text = "I need to hurry home...";
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(2);
         textBox.GetComponent<TextMeshProUGUI>().text = "";
+        isCoroutineStarted = false;
     }
 
     public IEnumerator ToolTipText()
     {
         isCoroutineStarted = true;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.2f);
         textBox.GetComponent<TextMeshProUGUI>().text = "Press E to talk";
         isCoroutineStarted = false;
     }
@@ -59,14 +59,23 @@ public class DialogueScript : MonoBehaviour
     public IEnumerator noText()
     {
         isCoroutineStarted = true;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         textBox.GetComponent<TextMeshProUGUI>().text = "";
+        isCoroutineStarted = false;
+    }
+
+    public IEnumerator storyItem1()
+    {
+        isCoroutineStarted = true;
+        textBox.GetComponent<TextMeshProUGUI>().text = "This is some text about the story 1.";
+        yield return new WaitForSeconds(1f);
         isCoroutineStarted = false;
     }
 
     public IEnumerator FairyDialogue()
     {
         isCoroutineStarted = true;
+        
         yield return new WaitForSeconds(1);
         textBox.GetComponent<TextMeshProUGUI>().text = "I'm a fairy and I may or may not tell lies.";
         yield return new WaitForSeconds(3);
@@ -81,6 +90,7 @@ public class DialogueScript : MonoBehaviour
     public IEnumerator NeutralDialogue()
     {
         isCoroutineStarted = true;
+        FindObjectOfType<AudioManager>().Play("giggle");
         yield return new WaitForSeconds(1);
         textBox.GetComponent<TextMeshProUGUI>().text = "This is the neutral Dialogue";
         yield return new WaitForSeconds(3);
@@ -91,6 +101,7 @@ public class DialogueScript : MonoBehaviour
     public IEnumerator TruthDialogue()
     {
         isCoroutineStarted = true;
+        FindObjectOfType<AudioManager>().Play("giggle");
         yield return new WaitForSeconds(1);
         textBox.GetComponent<TextMeshProUGUI>().text = "I speak the truth.";
         yield return new WaitForSeconds(3);
@@ -101,6 +112,7 @@ public class DialogueScript : MonoBehaviour
     public IEnumerator Liar1Dialogue()
     {
         isCoroutineStarted = true;
+        FindObjectOfType<AudioManager>().Play("giggle");
         yield return new WaitForSeconds(1);
         textBox.GetComponent<TextMeshProUGUI>().text = "I am Liar #1";
         yield return new WaitForSeconds(3);

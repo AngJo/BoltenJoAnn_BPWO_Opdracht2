@@ -10,6 +10,9 @@ TagManager:
   - SouthTrigger
   - WestTrigger
   - EastTrigger
+  - storyItem1
+  - storyItem2
+  - storyItem3
   layers:
   - Default
   - TransparentFX

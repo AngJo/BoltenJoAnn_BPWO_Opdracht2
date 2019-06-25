@@ -6,9 +6,9 @@ using TMPro;
 
 public class ToolTipScript : MonoBehaviour
 {
-    public GameObject textbox;
+    //public GameObject textbox;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player")
         {

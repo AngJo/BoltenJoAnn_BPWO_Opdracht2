@@ -22,6 +22,7 @@ public class FairyScript : MonoBehaviour
 
     public void PlayDialogue()
     {
+        print(name);
         switch (state)
         {
             case LiarState.Neutral:
