@@ -181,6 +181,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &113789966 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1348739217, guid: 3df955a654047b9478937648f3a1a83d,
+    type: 3}
+  m_PrefabInstance: {fileID: 813008127166089709}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &113789967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113789966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea39ce897362bb45b585b158bf20fe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &362417493
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -951,7 +969,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1012723036
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1500,5 +1518,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 1348739220, guid: 3df955a654047b9478937648f3a1a83d, type: 3}
+      propertyPath: m_Size.z
+      value: 1.3789265
+      objectReference: {fileID: 0}
+    - target: {fileID: 1348739220, guid: 3df955a654047b9478937648f3a1a83d, type: 3}
+      propertyPath: m_Center.x
+      value: 0.056762323
+      objectReference: {fileID: 0}
+    - target: {fileID: 1348739220, guid: 3df955a654047b9478937648f3a1a83d, type: 3}
+      propertyPath: m_Center.z
+      value: 0.1894633
+      objectReference: {fileID: 0}
+    - target: {fileID: 1348739220, guid: 3df955a654047b9478937648f3a1a83d, type: 3}
+      propertyPath: m_Size.x
+      value: 2.6260662
+      objectReference: {fileID: 0}
+    - target: {fileID: 1348739220, guid: 3df955a654047b9478937648f3a1a83d, type: 3}
+      propertyPath: m_Size.y
+      value: 2.0888567
+      objectReference: {fileID: 0}
+    - target: {fileID: 1348739220, guid: 3df955a654047b9478937648f3a1a83d, type: 3}
+      propertyPath: m_Center.y
+      value: 1.041043
+      objectReference: {fileID: 0}
+    - target: {fileID: 1348739220, guid: 3df955a654047b9478937648f3a1a83d, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1782638687, guid: 3df955a654047b9478937648f3a1a83d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3df955a654047b9478937648f3a1a83d, type: 3}

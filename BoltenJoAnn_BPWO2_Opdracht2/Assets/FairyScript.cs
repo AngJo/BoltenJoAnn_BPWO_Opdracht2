@@ -22,6 +22,7 @@ public class FairyScript : MonoBehaviour
 
     public void PlayDialogue()
     {
+        DialogueScript.Instance.activeAnimator = GetComponent<Animator>();
         print(name);
         switch (state)
         {

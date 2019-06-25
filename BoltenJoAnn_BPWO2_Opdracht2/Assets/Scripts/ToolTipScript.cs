@@ -8,7 +8,7 @@ public class ToolTipScript : MonoBehaviour
 {
     //public GameObject textbox;
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
@@ -22,6 +22,6 @@ public class ToolTipScript : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         //textbox.GetComponent<TextMeshProUGUI>().text = "";
-        DialogueScript.Instance.noText();
+        StartCoroutine(DialogueScript.Instance.noText());
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     // 0 = n, 1 = w, 2 = s, 3 = e
     public int truth = 0;
     public int neutral = 0;
-    public FairyScript[] fae;
+    public List<FairyScript> fae = new List<FairyScript>();
 
 
     public Transform playerPos;
@@ -55,12 +55,13 @@ public class GameManager : MonoBehaviour
         }
         instance = this;
         DontDestroyOnLoad(this);
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        fae = FindObjectsOfType<FairyScript>();
+        fae = FindObjectsOfType<FairyScript>().ToList();
         AssigNewLiar();
     }
 
@@ -94,7 +95,7 @@ public class GameManager : MonoBehaviour
 
     void ShuffleArray()
     {
-        for (int i = 0; i < fae.Length; i++)
+        for (int i = 0; i < fae.Count; i++)
         {
             FairyScript fairy = fae[i];
             //Get new position to move i to
@@ -109,18 +110,19 @@ public class GameManager : MonoBehaviour
 
     public void AssigNewLiar()
     {
+        //fae = new List<FairyScript>(4);
         
 
-        truth = UnityEngine.Random.Range(0, fae.Length);
+        truth = UnityEngine.Random.Range(0, fae.Count);
         correctPath = truth;
-        neutral = UnityEngine.Random.Range(0, fae.Length);
+        neutral = UnityEngine.Random.Range(0, fae.Count);
         if (neutral == truth)
         {
-            neutral = UnityEngine.Random.Range(0, fae.Length);
+            neutral = UnityEngine.Random.Range(0, fae.Count);
         }
         else
         {
-            for (int i = 0; i < fae.Length; i++)
+            for (int i = 0; i < fae.Count; i++)
             {
 
                 if (i == truth)
@@ -144,7 +146,7 @@ public class GameManager : MonoBehaviour
     {
         if (fae == null)
         {
-            fae = FindObjectsOfType<FairyScript>();
+            fae = FindObjectsOfType<FairyScript>().ToList<FairyScript>();
         }
         print("Checking name");
 
@@ -162,7 +164,8 @@ public class GameManager : MonoBehaviour
     }
 
     public void CreateNewLevelBlock(GameObject player, string triggerWall)
-    { 
+    {
+        
         trigger = triggerWall;
         CheckTrigger(trigger);
         //checkedTrigger = true;
@@ -171,6 +174,7 @@ public class GameManager : MonoBehaviour
 
         if (activatedTrigger == correctPath)
         {
+            
             rightChoice += 1;
             AssigNewLiar();
             SpawnStoryObject();
@@ -206,7 +210,7 @@ public class GameManager : MonoBehaviour
             if (Vector3.Distance(player.transform.position, wall.transform.position) > 5 && player.transform.position.z < (wall.transform.position.z))
             {
                 Destroy(previousRoom.gameObject);
-                fae = FindObjectsOfType<FairyScript>();
+                fae = FindObjectsOfType<FairyScript>().ToList<FairyScript>();
             }
         }     
         
@@ -229,7 +233,14 @@ public class GameManager : MonoBehaviour
 
     public void ClearFaeArray()
     {
-        Array.Clear(fae, 0, fae.Length);
+        //Array.Clear(fae, 0, fae.Length);
+        //fae.Clear();
+        fae = FindObjectsOfType<FairyScript>().ToList();
+        for (int i = fae.Count - 1; i >= 0; i--)
+        {
+            if (fae[i] == null)
+                fae.RemoveAt(i);
+        }
     }
     void LoadWinCase()
     {

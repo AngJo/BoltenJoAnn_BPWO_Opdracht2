@@ -21,7 +21,7 @@ public class ExitMazeScript : MonoBehaviour
         Debug.Log(transform.parent.parent.gameObject.name);
         if(transform.parent.parent.gameObject == GameManager.Instance.previousRoom) {
             Destroy(GameManager.Instance.previousRoom);
-            //GameManager.Instance.ClearFaeArray();
+            GameManager.Instance.ClearFaeArray();
         }
     }
 
